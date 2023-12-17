@@ -7,8 +7,11 @@ import com.myblog.service.PostService;
 import com.sun.deploy.net.proxy.MDefaultBrowserProxyConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,12 +23,17 @@ public class PostController {
         this.postService = postService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<?> createPost(@Valid @RequestBody PostDto postDto, BindingResult result) {
+        if (result.hasErrors()){
+            return new ResponseEntity<>(result.getFieldError().getDefaultMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         PostDto dto = postService.createPost(postDto);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePostById(@PathVariable long id) {
         postService.deletePostById(id);
@@ -39,6 +47,7 @@ public class PostController {
         return new ResponseEntity<>(postDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(
             @PathVariable long id,
