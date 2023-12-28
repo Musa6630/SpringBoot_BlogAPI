@@ -1,9 +1,11 @@
 package com.myblog.controller;
 
+import com.myblog.entity.Role;
 import com.myblog.entity.User;
 import com.myblog.payload.JWTAuthResponse;
 import com.myblog.payload.LoginDto;
 import com.myblog.payload.SignUpDto;
+import com.myblog.repository.RoleRepository;
 import com.myblog.repository.UserRepository;
 import com.myblog.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -50,6 +58,12 @@ public class AuthController {
         user.setEmail(signUpDto.getEmail());
         user.setUsername(signUpDto.getUsername());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+
+        Role roles=roleRepository.findByName("ROLE_ADMIN").get();
+        Set<Role> role=new HashSet<>();
+        role.add(roles);
+        user.setRoles(role);
+
         userRepository.save(user);
         return new ResponseEntity<>("User Registered", HttpStatus.CREATED);
     }

@@ -1,4 +1,4 @@
-package com.myblog.security;
+package com.myblog.config;
 
 import com.myblog.entity.Role;
 import com.myblog.entity.User;

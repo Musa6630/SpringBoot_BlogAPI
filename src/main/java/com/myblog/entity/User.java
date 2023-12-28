@@ -1,8 +1,6 @@
 package com.myblog.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.context.support.BeanDefinitionDsl;
 
 import javax.persistence.*;
@@ -13,7 +11,8 @@ import java.util.Set;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class User {
 
     @Id

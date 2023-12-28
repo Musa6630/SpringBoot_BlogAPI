@@ -1,5 +1,6 @@
 package com.myblog.security;
 
+import com.myblog.config.CustomUserDetailsService;
 import com.myblog.exception.BlogAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

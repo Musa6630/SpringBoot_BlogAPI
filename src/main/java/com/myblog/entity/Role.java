@@ -1,8 +1,6 @@
 package com.myblog.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,7 +10,8 @@ import java.util.Set;
 @Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class Role {
 
     @Id
